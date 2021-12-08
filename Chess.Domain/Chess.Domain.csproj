@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="DomianModel\ChessModel\ValueObjects\LookupValueObjects\Mappings\Color.xml" />
+    <None Remove="DomianModel\ChessModel\ValueObjects\LookupValueObjects\Mappings\PieceName.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="DomianModel\ChessModel\ValueObjects\LookupValueObjects\Mappings\PieceName.xml" />
+    <EmbeddedResource Include="DomianModel\ChessModel\ValueObjects\LookupValueObjects\Mappings\Color.xml" />
+  </ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microservice.Framework.Domain" Version="1.0.9" />
+		<PackageReference Include="Microservice.Framework.Persistence.EFCore" Version="1.0.5" />
+	</ItemGroup>
+
+</Project>

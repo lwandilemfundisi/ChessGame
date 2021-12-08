@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ValueObjects>
+	<ValueObject>
+		<Code>Black</Code>
+		<Text>Black</Text>
+	</ValueObject>
+	<ValueObject>
+		<Code>White</Code>
+		<Text>White</Text>
+	</ValueObject>
+</ValueObjects>

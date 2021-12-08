@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ValueObjects>
+	<ValueObject>
+		<Code>Pawn</Code>
+		<Text>Pawn</Text>
+	</ValueObject>
+	<ValueObject>
+		<Code>King</Code>
+		<Text>King</Text>
+	</ValueObject>
+	<ValueObject>
+		<Code>Queen</Code>
+		<Text>Queen</Text>
+	</ValueObject>
+	<ValueObject>
+		<Code>Bishop</Code>
+		<Text>Bishop</Text>
+	</ValueObject>
+	<ValueObject>
+		<Code>Night</Code>
+		<Text>Night</Text>
+	</ValueObject>
+	<ValueObject>
+		<Code>Rook</Code>
+		<Text>Rook</Text>
+	</ValueObject>
+</ValueObjects>
