@@ -1,6 +1,8 @@
 ﻿using Chess.Domain.DomianModel.ChessModel.Entities;
 using Chess.Domain.DomianModel.ChessModel.Events;
 using Chess.Domain.DomianModel.ChessModel.ValueObjects;
+using Chess.Domain.DomianModel.ChessModel.ValueObjects.LookupValueObjects;
+using Chess.Domain.Extensions;
 using Microservice.Framework.Domain.Aggregates;
 using Microservice.Framework.Domain.Extensions;
 using System;
@@ -14,6 +16,8 @@ namespace Chess.Domain.DomianModel.ChessModel
 {
     public class Board : AggregateRoot<Board, BoardId>
     {
+        private IList<Block> _blocks;
+
         #region Constructors
 
         public Board()
@@ -28,11 +32,23 @@ namespace Chess.Domain.DomianModel.ChessModel
 
         }
 
+        private Board(Action<object, string> lazyLoader)
+            : base(null)
+        {
+            LazyLoader = lazyLoader;
+        }
+
         #endregion
 
         #region Properties
 
-        public IList<Block> Blocks { get; set; }
+        private Action<object, string> LazyLoader { get; set; }
+
+        public IList<Block> Blocks 
+        {
+            get => LazyLoader.Load(this, ref _blocks);
+            set => _blocks = value;
+        }
 
         #endregion
 
@@ -41,6 +57,7 @@ namespace Chess.Domain.DomianModel.ChessModel
         public void CreateBoard()
         {
             Specs.AggregateIsNew.ThrowDomainErrorIfNotSatisfied(this);
+            BuildBoard();
             Emit(new CreatedBoardEvent());
         }
 
@@ -72,7 +89,7 @@ namespace Chess.Domain.DomianModel.ChessModel
         {
             //To Review [Can be done better]
             return Blocks
-                .First(s => s.ChessPiece.Id == pieceId)
+                .First(s => s.ChessPiece?.Id == pieceId)
                 .ChessPiece;
         }
 
@@ -80,7 +97,7 @@ namespace Chess.Domain.DomianModel.ChessModel
         {
             //Where we are moving from block
             var occupiedBlock = Blocks.First(b =>
-                                 b.ChessPiece.Id == move.PieceId);
+                                 b.ChessPiece?.Id == move.PieceId);
 
             //Where we are moving from index
             var occupiedBlockIdx = Blocks
@@ -107,7 +124,37 @@ namespace Chess.Domain.DomianModel.ChessModel
 
             //Clean the last block that was occupied
             Blocks[occupiedBlockIdx].ChessPiece = null;
+        }
 
+        private void BuildBoard()
+        {
+            Blocks = new List<Block>();
+
+            Color colorToAssignBlock = null;
+            for (int x = 1; x <= 8; x++)
+            {
+                if(x == 1)
+                    colorToAssignBlock = Colors.Of().White;
+
+                for (int y = 1; y <= 8; y++)
+                {
+                    Blocks.Add(new Block
+                    {
+                        Id = BlockId.New,
+                        BlockColor = colorToAssignBlock,
+                        XCoordinate = (uint)x,
+                        YCoordinate = (uint)y,
+                    });
+
+                    if (y == 8)
+                        break;
+
+                    if (colorToAssignBlock.IsIn(Colors.Of().White))
+                        colorToAssignBlock = Colors.Of().Black;
+                    else
+                        colorToAssignBlock = Colors.Of().White;
+                }
+            }
         }
 
         #endregion
