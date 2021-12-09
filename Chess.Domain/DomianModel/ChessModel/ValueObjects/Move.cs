@@ -37,7 +37,7 @@ namespace Chess.Domain.DomianModel.ChessModel.ValueObjects
         public PieceSpecification Specification(IReadOnlyCollection<Block> board)
         {
             var piece = board
-                .First(s => s.ChessPiece.Id == PieceId)
+                .First(s => s.ChessPiece?.Id == PieceId)
                 .ChessPiece;
 
             if(piece.PieceName.IsIn(PieceNames.Of().Pawn))

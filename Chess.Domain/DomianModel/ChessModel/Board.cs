@@ -58,6 +58,7 @@ namespace Chess.Domain.DomianModel.ChessModel
         {
             Specs.AggregateIsNew.ThrowDomainErrorIfNotSatisfied(this);
             BuildBoard();
+            PopulateBoardWithPieces();
             Emit(new CreatedBoardEvent());
         }
 
@@ -65,8 +66,7 @@ namespace Chess.Domain.DomianModel.ChessModel
         {
             Specs.AggregateIsCreated.ThrowDomainErrorIfNotSatisfied(this);
 
-            move
-                .Specification(new ReadOnlyCollection<Block>(Blocks))
+            move.Specification(new ReadOnlyCollection<Block>(Blocks))
                 .ThrowDomainErrorIfNotSatisfied(GetPiece(move.PieceId));
 
             //If we got at this point, the move was valid
@@ -154,6 +154,193 @@ namespace Chess.Domain.DomianModel.ChessModel
                     else
                         colorToAssignBlock = Colors.Of().White;
                 }
+            }
+        }
+
+        private void PopulateBoardWithPieces()
+        {
+            PlacePiece(1, 1, new ChessPiece 
+            {
+                Id = ChessPieceId.New,
+                PieceColor = Colors.Of().Black,
+                PieceName = PieceNames.Of().Rook,
+                XCoordinate = 1,
+                YCoordinate = 1
+            });
+
+            PlacePiece(1, 8, new ChessPiece
+            {
+                Id = ChessPieceId.New,
+                PieceColor = Colors.Of().Black,
+                PieceName = PieceNames.Of().Rook,
+                XCoordinate = 1,
+                YCoordinate = 8
+            });
+
+            PlacePiece(1, 2, new ChessPiece
+            {
+                Id = ChessPieceId.New,
+                PieceColor = Colors.Of().Black,
+                PieceName = PieceNames.Of().Night,
+                XCoordinate = 1,
+                YCoordinate = 2
+            });
+
+            PlacePiece(1, 7, new ChessPiece
+            {
+                Id = ChessPieceId.New,
+                PieceColor = Colors.Of().Black,
+                PieceName = PieceNames.Of().Night,
+                XCoordinate = 1,
+                YCoordinate = 7
+            });
+
+            PlacePiece(1, 3, new ChessPiece
+            {
+                Id = ChessPieceId.New,
+                PieceColor = Colors.Of().Black,
+                PieceName = PieceNames.Of().Bishop,
+                XCoordinate = 1,
+                YCoordinate = 3
+            });
+
+            PlacePiece(1, 6, new ChessPiece
+            {
+                Id = ChessPieceId.New,
+                PieceColor = Colors.Of().Black,
+                PieceName = PieceNames.Of().Bishop,
+                XCoordinate = 1,
+                YCoordinate = 6
+            });
+
+            PlacePiece(1, 4, new ChessPiece
+            {
+                Id = ChessPieceId.New,
+                PieceColor = Colors.Of().Black,
+                PieceName = PieceNames.Of().King,
+                XCoordinate = 1,
+                YCoordinate = 4
+            });
+
+            PlacePiece(1, 5, new ChessPiece
+            {
+                Id = ChessPieceId.New,
+                PieceColor = Colors.Of().Black,
+                PieceName = PieceNames.Of().Queen,
+                XCoordinate = 1,
+                YCoordinate = 5
+            });
+
+            PlaceBlackPawns();
+
+            PlaceWhitePawns();
+
+            PlacePiece(8, 1, new ChessPiece
+            {
+                Id = ChessPieceId.New,
+                PieceColor = Colors.Of().White,
+                PieceName = PieceNames.Of().Rook,
+                XCoordinate = 8,
+                YCoordinate = 1
+            });
+
+            PlacePiece(8, 8, new ChessPiece
+            {
+                Id = ChessPieceId.New,
+                PieceColor = Colors.Of().White,
+                PieceName = PieceNames.Of().Rook,
+                XCoordinate = 8,
+                YCoordinate = 8
+            });
+
+            PlacePiece(8, 2, new ChessPiece
+            {
+                Id = ChessPieceId.New,
+                PieceColor = Colors.Of().White,
+                PieceName = PieceNames.Of().Night,
+                XCoordinate = 8,
+                YCoordinate = 2
+            });
+
+            PlacePiece(8, 7, new ChessPiece
+            {
+                Id = ChessPieceId.New,
+                PieceColor = Colors.Of().White,
+                PieceName = PieceNames.Of().Night,
+                XCoordinate = 8,
+                YCoordinate = 7
+            });
+
+            PlacePiece(8, 3, new ChessPiece
+            {
+                Id = ChessPieceId.New,
+                PieceColor = Colors.Of().White,
+                PieceName = PieceNames.Of().Bishop,
+                XCoordinate = 8,
+                YCoordinate = 3
+            });
+
+            PlacePiece(8, 6, new ChessPiece
+            {
+                Id = ChessPieceId.New,
+                PieceColor = Colors.Of().White,
+                PieceName = PieceNames.Of().Bishop,
+                XCoordinate = 8,
+                YCoordinate = 6
+            });
+
+            PlacePiece(8, 4, new ChessPiece
+            {
+                Id = ChessPieceId.New,
+                PieceColor = Colors.Of().White,
+                PieceName = PieceNames.Of().King,
+                XCoordinate = 8,
+                YCoordinate = 4
+            });
+
+            PlacePiece(8, 5, new ChessPiece
+            {
+                Id = ChessPieceId.New,
+                PieceColor = Colors.Of().White,
+                PieceName = PieceNames.Of().Queen,
+                XCoordinate = 8,
+                YCoordinate = 5
+            });
+        }
+
+        private void PlacePiece(uint x, uint y, ChessPiece piece)
+        {
+            Blocks.First(b => b.XCoordinate == x 
+            && b.YCoordinate == y).ChessPiece = piece;
+        }
+
+        private void PlaceBlackPawns()
+        {
+            for(int y = 1; y <= 8; y++)
+            {
+                PlacePiece(2, (uint)y, new ChessPiece
+                {
+                    Id = ChessPieceId.New,
+                    PieceColor = Colors.Of().Black,
+                    PieceName = PieceNames.Of().Pawn,
+                    XCoordinate = 1,
+                    YCoordinate = (uint)y
+                });
+            }
+        }
+
+        private void PlaceWhitePawns()
+        {
+            for (int y = 1; y <= 8; y++)
+            {
+                PlacePiece(7, (uint)y, new ChessPiece
+                {
+                    Id = ChessPieceId.New,
+                    PieceColor = Colors.Of().White,
+                    PieceName = PieceNames.Of().Pawn,
+                    XCoordinate = 7,
+                    YCoordinate = (uint)y
+                });
             }
         }
 
