@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Chess.Persistence.Migrations
 {
     [DbContext(typeof(ChessContext))]
-    [Migration("20211209111227_init")]
+    [Migration("20211209114004_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

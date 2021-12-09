@@ -1,6 +1,8 @@
 ﻿using Chess.Domain.DomianModel.ChessModel;
 using Chess.Domain.DomianModel.ChessModel.Commands;
+using Chess.Domain.DomianModel.ChessModel.Queries;
 using Microservice.Framework.Domain.Commands;
+using Microservice.Framework.Domain.Queries;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -16,10 +18,14 @@ namespace Chess.Api.Controllers
     public class ChessController : ControllerBase
     {
         private readonly ICommandBus _commandBus;
+        private readonly IQueryProcessor _queryProcessor;
 
-        public ChessController(ICommandBus commandBus)
+        public ChessController(
+            ICommandBus commandBus, 
+            IQueryProcessor queryProcessor)
         {
             _commandBus = commandBus;
+            _queryProcessor = queryProcessor;
         }
 
         [HttpPost]
@@ -27,6 +33,13 @@ namespace Chess.Api.Controllers
         {
             return Ok(await _commandBus
                 .PublishAsync(new CreateBoardCommand(BoardId.New), CancellationToken.None));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetBoard([FromQuery] string boardId)
+        {
+            return Ok(await _queryProcessor
+                .ProcessAsync(new GetBoardQuery(new BoardId(boardId)), CancellationToken.None));
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Chess.Domain.DomianModel.ChessModel.ValueObjects;
 using Chess.Domain.DomianModel.ChessModel.ValueObjects.LookupValueObjects;
+using Chess.Domain.Extensions;
 using Microservice.Framework.Domain;
 using System;
 using System.Collections.Generic;
@@ -11,9 +12,17 @@ namespace Chess.Domain.DomianModel.ChessModel.Entities
 {
     public class Block : Entity<BlockId>
     {
+        private ChessPiece _chessPiece;
+
         #region Properties
 
-        public ChessPiece ChessPiece { get; set; }
+        private Action<object, string> LazyLoader { get; set; }
+
+        public ChessPiece ChessPiece
+        {
+            get => LazyLoader.Load(this, ref _chessPiece);
+            set => _chessPiece = value;
+        }
 
         public Color BlockColor { get; set; }
 
