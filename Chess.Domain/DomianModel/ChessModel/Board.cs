@@ -323,7 +323,7 @@ namespace Chess.Domain.DomianModel.ChessModel
                     Id = ChessPieceId.New,
                     PieceColor = Colors.Of().Black,
                     PieceName = PieceNames.Of().Pawn,
-                    XCoordinate = 1,
+                    XCoordinate = 2,
                     YCoordinate = (uint)y
                 });
             }
