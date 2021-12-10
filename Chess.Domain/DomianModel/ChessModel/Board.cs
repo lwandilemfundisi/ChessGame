@@ -231,9 +231,9 @@ namespace Chess.Domain.DomianModel.ChessModel
                 YCoordinate = 5
             });
 
-            PlaceBlackPawns();
+            PlacePawns(2, Colors.Of().Black);
 
-            PlaceWhitePawns();
+            PlacePawns(7, Colors.Of().White);
 
             PlacePiece(8, 1, new ChessPiece
             {
@@ -314,31 +314,16 @@ namespace Chess.Domain.DomianModel.ChessModel
             && b.YCoordinate == y).ChessPiece = piece;
         }
 
-        private void PlaceBlackPawns()
-        {
-            for(int y = 1; y <= 8; y++)
-            {
-                PlacePiece(2, (uint)y, new ChessPiece
-                {
-                    Id = ChessPieceId.New,
-                    PieceColor = Colors.Of().Black,
-                    PieceName = PieceNames.Of().Pawn,
-                    XCoordinate = 2,
-                    YCoordinate = (uint)y
-                });
-            }
-        }
-
-        private void PlaceWhitePawns()
+        private void PlacePawns(uint startXCoordinate, Color pawnColor)
         {
             for (int y = 1; y <= 8; y++)
             {
-                PlacePiece(7, (uint)y, new ChessPiece
+                PlacePiece(startXCoordinate, (uint)y, new ChessPiece
                 {
                     Id = ChessPieceId.New,
-                    PieceColor = Colors.Of().White,
+                    PieceColor = pawnColor,
                     PieceName = PieceNames.Of().Pawn,
-                    XCoordinate = 7,
+                    XCoordinate = startXCoordinate,
                     YCoordinate = (uint)y
                 });
             }
