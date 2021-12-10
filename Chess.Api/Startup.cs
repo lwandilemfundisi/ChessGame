@@ -1,3 +1,4 @@
+using AutoMapper;
 using Chess.Domain;
 using Chess.Persistence.Extensions;
 using Microsoft.AspNetCore.Builder;
@@ -28,6 +29,7 @@ namespace Chess.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddSingleton(_ => Configuration);
             services.AddControllers();
             services.AddSwaggerGen(c =>

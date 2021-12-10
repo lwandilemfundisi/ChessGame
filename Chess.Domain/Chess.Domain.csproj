@@ -17,6 +17,7 @@
 	<ItemGroup>
 		<PackageReference Include="Microservice.Framework.Domain" Version="1.0.9" />
 		<PackageReference Include="Microservice.Framework.Persistence.EFCore" Version="1.0.5" />
+		<PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
 	</ItemGroup>
 
 </Project>

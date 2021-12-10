@@ -1,6 +1,10 @@
-﻿using Chess.Domain.DomianModel.ChessModel;
+﻿using AutoMapper;
+using Chess.Api.Mappers;
+using Chess.Api.Models.RequestModels;
+using Chess.Domain.DomianModel.ChessModel;
 using Chess.Domain.DomianModel.ChessModel.Commands;
 using Chess.Domain.DomianModel.ChessModel.Queries;
+using Chess.Domain.DomianModel.ChessModel.ValueObjects;
 using Microservice.Framework.Domain.Commands;
 using Microservice.Framework.Domain.Queries;
 using Microsoft.AspNetCore.Mvc;
@@ -17,29 +21,41 @@ namespace Chess.Api.Controllers
     [Route("[controller]")]
     public class ChessController : ControllerBase
     {
+        private readonly IMapper _mapper;
         private readonly ICommandBus _commandBus;
         private readonly IQueryProcessor _queryProcessor;
 
         public ChessController(
+            IMapper mapper,
             ICommandBus commandBus, 
             IQueryProcessor queryProcessor)
         {
+            _mapper = mapper;
             _commandBus = commandBus;
             _queryProcessor = queryProcessor;
         }
 
-        [HttpPost]
+        [HttpPost("createboard")]
         public async Task<IActionResult> CreateBoard()
         {
             return Ok(await _commandBus
                 .PublishAsync(new CreateBoardCommand(BoardId.New), CancellationToken.None));
         }
 
-        [HttpGet]
+        [HttpGet("getboard")]
         public async Task<IActionResult> GetBoard([FromQuery] string boardId)
         {
             return Ok(await _queryProcessor
                 .ProcessAsync(new GetBoardQuery(new BoardId(boardId)), CancellationToken.None));
+        }
+
+        [HttpPost("move")]
+        public async Task<IActionResult> Move(MoveRequestModel model)
+        {
+            return Ok(await _commandBus
+                .PublishAsync(new MovePieceCommand(
+                    model.BoardId, 
+                    new MoveMapper(model).Map()), CancellationToken.None));
         }
     }
 }

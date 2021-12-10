@@ -25,13 +25,13 @@ namespace Chess.Domain.DomianModel.ChessModel.Commands
     }
 
     public class ResetBoardCommandHandler
-        : CommandHandler<Board, BoardId, MovePieceCommand>
+        : CommandHandler<Board, BoardId, ResetBoardCommand>
     {
         #region Virtual Methods
 
         public override Task<IExecutionResult> ExecuteAsync(
             Board aggregate,
-            MovePieceCommand command, 
+            ResetBoardCommand command, 
             CancellationToken cancellationToken)
         {
             aggregate.ResetBoard();
