@@ -32,12 +32,6 @@ namespace Chess.Domain.DomianModel.ChessModel
 
         }
 
-        private Board(Action<object, string> lazyLoader)
-            : base(null)
-        {
-            LazyLoader = lazyLoader;
-        }
-
         #endregion
 
         #region Properties

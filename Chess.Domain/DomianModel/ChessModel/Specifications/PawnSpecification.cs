@@ -31,5 +31,33 @@ namespace Chess.Domain.DomianModel.ChessModel.Specifications
         }
 
         #endregion
+
+        #region Private Classes
+
+        private class EnPassentSpecification : PieceSpecification
+        {
+            #region Constructors
+
+            public EnPassentSpecification(
+                Move move,
+                IReadOnlyCollection<Block> board)
+                : base(move, board)
+            {
+
+            }
+
+            #endregion
+
+            #region Virtual Methods
+
+            protected override Notification IsNotSatisfiedBecause(ChessPiece obj)
+            {
+                throw new NotImplementedException();
+            }
+
+            #endregion
+        }
+
+        #endregion
     }
 }

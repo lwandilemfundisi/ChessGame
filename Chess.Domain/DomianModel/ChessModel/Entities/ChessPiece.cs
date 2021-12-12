@@ -21,6 +21,8 @@ namespace Chess.Domain.DomianModel.ChessModel.Entities
 
         public uint YCoordinate { get; set; }
 
+        public bool HasMovedSinceStart { get; set; }
+
         #endregion
     }
 }

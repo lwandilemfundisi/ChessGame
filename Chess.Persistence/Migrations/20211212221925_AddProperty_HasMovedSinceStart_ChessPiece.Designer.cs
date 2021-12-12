@@ -3,14 +3,16 @@ using Chess.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Chess.Persistence.Migrations
 {
     [DbContext(typeof(ChessContext))]
-    partial class ChessContextModelSnapshot : ModelSnapshot
+    [Migration("20211212221925_AddProperty_HasMovedSinceStart_ChessPiece")]
+    partial class AddProperty_HasMovedSinceStart_ChessPiece
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
