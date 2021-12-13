@@ -26,75 +26,35 @@ namespace Chess.Domain.DomianModel.ChessModel.Specifications
 
         protected Move Move { get; set; }
 
-        protected ChessPiece Piece
-        {
-            get
-            {
-                return Board
+        protected ChessPiece Piece => Board
                 .First(s => s.ChessPiece?.Id == Move.PieceId)
                 .ChessPiece;
-            }
-        }
 
-        protected double Distance
-        {
-            get
-            {
-                return ChessMath.Distance(
+        protected double Distance => ChessMath.Distance(
                     Move.NewXCoordinate,
                     Piece.XCoordinate,
                     Move.NewYCoordinate,
                     Piece.YCoordinate);
-            }
-        }
 
-        protected bool IsDiagonal
-        {
-            get 
-            {
-                return Math.Abs(Slope) > 0;
-            }
-        }
+        protected bool IsValidDiagonal => Math.Abs(Slope) > SlopeThreshold;
 
-        protected double Slope
-        {
-            get
-            {
-                return ChessMath.Slope(
+        protected double Slope => ChessMath.Slope(
                     Move.NewYCoordinate,
                     Piece.YCoordinate,
                     Move.NewXCoordinate,
                     Piece.XCoordinate);
-            }
-        }
 
-        protected bool IsMovingLOrR
-        {
-            get
-            {
-                return Math.Abs(DirectionX_Axis) > 0;
-            }
-        }
+        protected bool IsMovingLOrR => Math.Abs(DirectionX_Axis) > 0;
 
-        protected int DirectionX_Axis
-        {
-            get
-            {
-                return ChessMath.DirectionX_Axis(
+        protected int DirectionX_Axis => ChessMath.DirectionX_Axis(
                     (int)Move.NewXCoordinate,
                     (int)Piece.XCoordinate);
-            }
-        }
 
-        protected int DirectionY_Axis
-        {
-            get
-            {
-                return ChessMath.DirectionY_Axis(
+        protected int DirectionY_Axis => ChessMath.DirectionY_Axis(
                     (int)Move.NewYCoordinate,
                     (int)Piece.YCoordinate);
-            }
-        }
+
+        protected virtual double SlopeThreshold { get { return 1; } }
 
         public IReadOnlyCollection<Block> Board { get; }
 

@@ -37,11 +37,11 @@ namespace Chess.Domain.DomianModel.ChessModel.Specifications
             {
                 if(IsMovingLOrR)
                 {
-                    if(!IsDiagonal)
+                    if(!IsValidDiagonal)
                         notification.AddError(new Message($"move was invalid. You cannot move left or right using a {Piece.PieceName.Text}"));
                     else
                     {
-
+                        //Are we capturing a piece or perfoming enpassant?
                     }
                 }
                 else
