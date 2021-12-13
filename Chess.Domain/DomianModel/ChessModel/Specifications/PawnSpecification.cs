@@ -26,27 +26,35 @@ namespace Chess.Domain.DomianModel.ChessModel.Specifications
         #endregion
 
         #region Virtual Methods
+
+        protected override int NumberOfBlocksAllowedToMoveDiagonal => 1;
+
+        protected override bool IsCorrectDirection => (Piece.PieceColor.YAxisDirectionIsUp && IsDiagonalUp) 
+            || (!Piece.PieceColor.YAxisDirectionIsUp && IsDiagonalDown);
+
         protected override Notification IsNotSatisfiedBecause(Move obj)
         {
             Move = obj;
             var notification = Notification.CreateEmpty();
 
-            if(Piece.IsNull())
-                notification.AddError(new Message("move was invalid. You need to select a block with a piece to move!"));
-            else
+            if(IsMovingLOrR)
             {
-                if(IsMovingLOrR)
-                {
-                    if(!IsValidDiagonal)
-                        notification.AddError(new Message($"move was invalid. You cannot move left or right using a {Piece.PieceName.Text}"));
-                    else
-                    {
-                        //Are we capturing a piece or perfoming enpassant?
-                    }
-                }
+                if(!IsValidDiagonal)
+                    notification.AddError(new Message($"move was invalid for a {Piece.PieceName.Text}. " +
+                        $"You cannot move left or right"));
                 else
                 {
+                    if(!DestinationIsOccupied)
+                        notification.AddError(new Message($"move was invalid for a {Piece.PieceName.Text}. " +
+                            $"You can only move diagonal when capturing opponent's piece or perfoming enpassant"));
+                    else
+                    {
+
+                    }
                 }
+            }
+            else
+            {
             }
 
             return notification;

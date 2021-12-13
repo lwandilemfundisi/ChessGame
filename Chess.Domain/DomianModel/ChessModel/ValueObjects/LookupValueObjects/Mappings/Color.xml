@@ -3,9 +3,11 @@
 	<ValueObject>
 		<Code>Black</Code>
 		<Text>Black</Text>
+		<YAxisDirectionIsUp>false</YAxisDirectionIsUp>
 	</ValueObject>
 	<ValueObject>
 		<Code>White</Code>
 		<Text>White</Text>
+		<YAxisDirectionIsUp>true</YAxisDirectionIsUp>
 	</ValueObject>
 </ValueObjects>
