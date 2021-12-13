@@ -39,22 +39,18 @@ namespace Chess.Domain.DomianModel.ChessModel.Specifications
 
             if(IsMovingLOrR)
             {
-                if(!IsValidDiagonal)
+                if (!IsValidDiagonal)
+                    notification.AddError(new Message($"move was invalid for a {Piece.PieceName.Text}."));
+                else if(!DestinationIsOccupied)
                     notification.AddError(new Message($"move was invalid for a {Piece.PieceName.Text}. " +
-                        $"You cannot move left or right"));
-                else
-                {
-                    if(!DestinationIsOccupied)
-                        notification.AddError(new Message($"move was invalid for a {Piece.PieceName.Text}. " +
-                            $"You can only move diagonal when capturing opponent's piece or perfoming enpassant"));
-                    else
-                    {
-
-                    }
-                }
+                        $"You can only move diagonal when capturing opponent's piece or perfoming enpassant!"));
+                else if (!PieceAtDestinationIsOpponent)
+                    notification.AddError(new Message($"move was invalid for a {Piece.PieceName.Text}. " +
+                        "You cannot attempt to capture your own piece!"));
             }
             else
             {
+
             }
 
             return notification;

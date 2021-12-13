@@ -55,6 +55,8 @@ namespace Chess.Domain.DomianModel.ChessModel.Specifications
 
         protected bool IsMovingLOrR => Math.Abs(DirectionX_Axis) > 0;
 
+        protected bool IsMovingUpOrDown => Math.Abs(DirectionY_Axis) > 0;
+
         protected int DirectionX_Axis => ChessMath.DirectionX_Axis(
                     (int)Move.NewXCoordinate,
                     (int)Piece.XCoordinate);
@@ -69,6 +71,12 @@ namespace Chess.Domain.DomianModel.ChessModel.Specifications
 
         protected bool DestinationIsOccupied => 
             DestinationBlock.ChessPiece.IsNotNull();
+
+        protected ChessPiece PieceAtDestination =>
+            DestinationBlock.ChessPiece;
+
+        protected bool PieceAtDestinationIsOpponent => 
+            !PieceAtDestination.PieceColor.IsIn(Piece.PieceColor);
 
         protected virtual double SlopeThreshold => 1;
 
