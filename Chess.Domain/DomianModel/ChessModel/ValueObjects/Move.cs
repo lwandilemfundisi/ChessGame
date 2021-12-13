@@ -41,17 +41,17 @@ namespace Chess.Domain.DomianModel.ChessModel.ValueObjects
                 .ChessPiece;
 
             if(piece.PieceName.IsIn(PieceNames.Of().Pawn))
-                return new PawnSpecification(this, board);
+                return new PawnSpecification(board);
             if (piece.PieceName.IsIn(PieceNames.Of().Night))
-                return new NightSpecification(this, board);
+                return new NightSpecification(board);
             if (piece.PieceName.IsIn(PieceNames.Of().Bishop))
-                return new BishopSpecification(this, board);
+                return new BishopSpecification(board);
             if (piece.PieceName.IsIn(PieceNames.Of().Rook))
-                return new RookSpecification(this, board);
+                return new RookSpecification(board);
             if (piece.PieceName.IsIn(PieceNames.Of().Queen))
-                return new QueenSpecification(this, board);
+                return new QueenSpecification(board);
             if (piece.PieceName.IsIn(PieceNames.Of().King))
-                return new KingSpecification(this, board);
+                return new KingSpecification(board);
 
             throw new ArgumentException("Could not find a matching piece specification");
         }

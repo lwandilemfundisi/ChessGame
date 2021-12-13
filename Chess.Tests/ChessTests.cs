@@ -10,9 +10,9 @@ namespace Chess.Tests
         public void DistanceBetweenPointss()
         {
             var x1 = 1;
-            var y1 = 1;
-            var x2 = 1;
-            var y2 = 3;
+            var y1 = 2;
+            var x2 = 2;
+            var y2 = 1;
 
             var distance = Math.Sqrt(Math.Pow((x2 - x1), 2) + Math.Pow((y2 - y1), 2));
         }
@@ -20,8 +20,8 @@ namespace Chess.Tests
         [TestMethod]
         public void SlopeBetweenPoints()
         {
-            decimal x1 = 4;
-            decimal y1 = 1;
+            decimal x1 = 2;
+            decimal y1 = 2;
             decimal x2 = 1;
             decimal y2 = 1;
 

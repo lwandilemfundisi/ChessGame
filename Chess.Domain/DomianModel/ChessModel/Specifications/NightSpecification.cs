@@ -15,17 +15,15 @@ namespace Chess.Domain.DomianModel.ChessModel.Specifications
         #region Constructors
 
         public NightSpecification(
-            Move move,
             IReadOnlyCollection<Block> board)
-            : base(move, board)
+            : base(board)
         {
-
         }
 
         #endregion
 
         #region Virtual Methods
-        protected override Notification IsNotSatisfiedBecause(ChessPiece obj)
+        protected override Notification IsNotSatisfiedBecause(Move obj)
         {
             throw new NotImplementedException();
         }

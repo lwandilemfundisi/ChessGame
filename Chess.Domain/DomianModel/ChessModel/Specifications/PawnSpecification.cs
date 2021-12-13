@@ -1,5 +1,7 @@
-﻿using Chess.Domain.DomianModel.ChessModel.Entities;
+﻿using Chess.Arithmetic;
+using Chess.Domain.DomianModel.ChessModel.Entities;
 using Chess.Domain.DomianModel.ChessModel.ValueObjects;
+using Microservice.Framework.Common;
 using Microservice.Framework.Domain;
 using Microservice.Framework.Domain.Rules.Notifications;
 using System;
@@ -15,9 +17,8 @@ namespace Chess.Domain.DomianModel.ChessModel.Specifications
         #region Constructors
 
         public PawnSpecification(
-            Move move,
             IReadOnlyCollection<Block> board)
-            : base(move, board)
+            : base(board)
         {
 
         }
@@ -25,9 +26,30 @@ namespace Chess.Domain.DomianModel.ChessModel.Specifications
         #endregion
 
         #region Virtual Methods
-        protected override Notification IsNotSatisfiedBecause(ChessPiece obj)
+        protected override Notification IsNotSatisfiedBecause(Move obj)
         {
-            throw new NotImplementedException();
+            Move = obj;
+            var notification = Notification.CreateEmpty();
+
+            if(Piece.IsNull())
+                notification.AddError(new Message("move was invalid. You need to select a block with a piece to move!"));
+            else
+            {
+                if(IsMovingLOrR)
+                {
+                    if(!IsDiagonal)
+                        notification.AddError(new Message($"move was invalid. You cannot move left or right using a {Piece.PieceName.Text}"));
+                    else
+                    {
+
+                    }
+                }
+                else
+                {
+                }
+            }
+
+            return notification;
         }
 
         #endregion
@@ -39,9 +61,8 @@ namespace Chess.Domain.DomianModel.ChessModel.Specifications
             #region Constructors
 
             public EnPassentSpecification(
-                Move move,
                 IReadOnlyCollection<Block> board)
-                : base(move, board)
+                : base(board)
             {
 
             }
@@ -50,7 +71,7 @@ namespace Chess.Domain.DomianModel.ChessModel.Specifications
 
             #region Virtual Methods
 
-            protected override Notification IsNotSatisfiedBecause(ChessPiece obj)
+            protected override Notification IsNotSatisfiedBecause(Move obj)
             {
                 throw new NotImplementedException();
             }

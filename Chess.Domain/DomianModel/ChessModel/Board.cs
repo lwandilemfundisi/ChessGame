@@ -61,7 +61,7 @@ namespace Chess.Domain.DomianModel.ChessModel
             Specs.AggregateIsCreated.ThrowDomainErrorIfNotSatisfied(this);
 
             move.Specification(new ReadOnlyCollection<Block>(Blocks))
-                .ThrowDomainErrorIfNotSatisfied(GetPiece(move.PieceId));
+                .ThrowDomainErrorIfNotSatisfied(move);
 
             //If we got at this point, the move was valid
             Move(move);
@@ -89,35 +89,35 @@ namespace Chess.Domain.DomianModel.ChessModel
 
         private void Move(Move move)
         {
-            //Where we are moving from block
-            var occupiedBlock = Blocks.First(b =>
-                                 b.ChessPiece?.Id == move.PieceId);
+            ////Where we are moving from block
+            //var occupiedBlock = Blocks.First(b =>
+            //                     b.ChessPiece?.Id == move.PieceId);
 
-            //Where we are moving from index
-            var occupiedBlockIdx = Blocks
-                .IndexOf(occupiedBlock);
+            ////Where we are moving from index
+            //var occupiedBlockIdx = Blocks
+            //    .IndexOf(occupiedBlock);
 
-            //Where we are moving to index
-            var newBlockIdx = Blocks
-                .IndexOf(Blocks.First(b => 
-                                b.XCoordinate == move.NewXCoordinate 
-                                    && b.YCoordinate == move.NewYCoordinate));
+            ////Where we are moving to index
+            //var newBlockIdx = Blocks
+            //    .IndexOf(Blocks.First(b => 
+            //                    b.XCoordinate == move.NewXCoordinate 
+            //                        && b.YCoordinate == move.NewYCoordinate));
 
-            //Keep a reference of the piece we want to move
-            var pieceToMove = GetPiece(move.PieceId);
+            ////Keep a reference of the piece we want to move
+            //var pieceToMove = GetPiece(move.PieceId);
 
-            //Now move the piece to the new block
-            Blocks[newBlockIdx].ChessPiece = new ChessPiece
-            {
-                Id = pieceToMove.Id,
-                PieceColor = pieceToMove.PieceColor,
-                PieceName = pieceToMove.PieceName,
-                XCoordinate = move.NewXCoordinate,
-                YCoordinate = move.NewYCoordinate
-            };
+            ////Now move the piece to the new block
+            //Blocks[newBlockIdx].ChessPiece = new ChessPiece
+            //{
+            //    Id = pieceToMove.Id,
+            //    PieceColor = pieceToMove.PieceColor,
+            //    PieceName = pieceToMove.PieceName,
+            //    XCoordinate = move.NewXCoordinate,
+            //    YCoordinate = move.NewYCoordinate
+            //};
 
-            //Clean the last block that was occupied
-            Blocks[occupiedBlockIdx].ChessPiece = null;
+            ////Clean the last block that was occupied
+            //Blocks[occupiedBlockIdx].ChessPiece = null;
         }
 
         private void BuildBoard()
