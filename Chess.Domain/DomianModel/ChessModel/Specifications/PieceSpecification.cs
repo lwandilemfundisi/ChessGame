@@ -37,6 +37,9 @@ namespace Chess.Domain.DomianModel.ChessModel.Specifications
                     Move.NewYCoordinate,
                     Piece.YCoordinate);
 
+        protected bool IsValidUpOrDown => Math.Abs(DirectionY_Axis) 
+            <= NumberOfBlocksAllowedToMoveVertical;
+
         protected bool IsValidDiagonal => Math.Abs(Slope) == SlopeThreshold
             && Math.Floor(Distance) == NumberOfBlocksAllowedToMoveDiagonal
             && IsCorrectDirection;
@@ -55,7 +58,9 @@ namespace Chess.Domain.DomianModel.ChessModel.Specifications
 
         protected bool IsMovingLOrR => Math.Abs(DirectionX_Axis) > 0;
 
-        protected bool IsMovingUpOrDown => Math.Abs(DirectionY_Axis) > 0;
+        protected bool IsMovingUp => DirectionY_Axis > 0;
+
+        protected bool IsMovingDown => DirectionY_Axis < 0;
 
         protected int DirectionX_Axis => ChessMath.DirectionX_Axis(
                     (int)Move.NewXCoordinate,
@@ -83,6 +88,8 @@ namespace Chess.Domain.DomianModel.ChessModel.Specifications
         protected virtual int NumberOfBlocksAllowedToMoveDiagonal => 0;
 
         protected virtual bool IsCorrectDirection => true;
+
+        protected virtual int NumberOfBlocksAllowedToMoveVertical => 7;
 
         public IReadOnlyCollection<Block> Board { get; }
 

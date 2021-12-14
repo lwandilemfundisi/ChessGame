@@ -27,10 +27,14 @@ namespace Chess.Domain.DomianModel.ChessModel.Specifications
 
         #region Virtual Methods
 
+        protected override int NumberOfBlocksAllowedToMoveVertical => 2;
+
         protected override int NumberOfBlocksAllowedToMoveDiagonal => 1;
 
         protected override bool IsCorrectDirection => (Piece.PieceColor.YAxisDirectionIsUp && IsDiagonalUp) 
-            || (!Piece.PieceColor.YAxisDirectionIsUp && IsDiagonalDown);
+            || (!Piece.PieceColor.YAxisDirectionIsUp && IsDiagonalDown)
+            || (Piece.PieceColor.YAxisDirectionIsUp && IsMovingUp) 
+            || (!Piece.PieceColor.YAxisDirectionIsUp && IsMovingDown);
 
         protected override Notification IsNotSatisfiedBecause(Move obj)
         {
@@ -50,7 +54,15 @@ namespace Chess.Domain.DomianModel.ChessModel.Specifications
             }
             else
             {
-
+                if(!IsCorrectDirection)
+                    notification.AddError(new Message($"move was invalid for a {Piece.PieceName.Text}. " +
+                        $"You can only move {(Piece.PieceColor.YAxisDirectionIsUp ? "up" : "down")}!"));
+                else if (DestinationIsOccupied)
+                    notification.AddError(new Message($"move was invalid for a {Piece.PieceName.Text}. " +
+                        $"You cannot occupy a block that already has a piece on!"));
+                else if(!IsValidUpOrDown)
+                    notification.AddError(new Message($"move was invalid for a {Piece.PieceName.Text}. " +
+                        $"You cannot move {(Piece.PieceColor.YAxisDirectionIsUp ? "up" : "down")} more than {NumberOfBlocksAllowedToMoveVertical}"));
             }
 
             return notification;

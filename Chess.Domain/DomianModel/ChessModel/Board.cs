@@ -79,14 +79,6 @@ namespace Chess.Domain.DomianModel.ChessModel
 
         #region Private Methods
 
-        private ChessPiece GetPiece(ChessPieceId pieceId)
-        {
-            //To Review [Can be done better]
-            return Blocks
-                .First(s => s.ChessPiece?.Id == pieceId)
-                .ChessPiece;
-        }
-
         private void Move(Move move)
         {
             ////Where we are moving from block

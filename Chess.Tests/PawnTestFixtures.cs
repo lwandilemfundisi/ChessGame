@@ -34,21 +34,18 @@ namespace Chess.Tests
         }
 
         [TestMethod]
-        [Ignore]
         public async Task TestMovePawnOneUpSuccess()
         {
             await TestMove(2, 2, 2, 3);
         }
 
         [TestMethod]
-        [Ignore]
         public async Task TestMovePawnTwoUpSuccess()
         {
             await TestMove(2, 2, 2, 4);
         }
 
         [TestMethod]
-        [Ignore]
         [ExpectedException(typeof(DomainError))]
         public async Task TestMovePawnMoreThanTwoFail()
         {
