@@ -88,20 +88,21 @@ namespace Chess.Tests
         private async Task TestMove(int x_origin, int y_origin, int x_des, int y_des)
         {
             using var provider = _serviceCollection.BuildServiceProvider();
+            var commandBus = provider.GetRequiredService<ICommandBus>();
+            var queryProcessor = provider.GetRequiredService<IQueryProcessor>();
 
             var boardId = BoardId.New;
-            var commandBus = provider.GetRequiredService<ICommandBus>();
-            var commandResult = await commandBus
+            
+            await commandBus
                 .PublishAsync(new CreateBoardCommand(boardId), CancellationToken.None);
-            Assert.IsTrue(commandResult.IsSuccess);
-
-            var queryProcessor = provider.GetRequiredService<IQueryProcessor>();
+            
             var queryResult = await queryProcessor
                 .ProcessAsync(new GetBoardQuery(boardId), CancellationToken.None);
-            Assert.IsNotNull(queryResult);
 
             var pieceId = queryResult
-                .Blocks.First(b => b.XCoordinate == x_origin && b.YCoordinate == y_origin).ChessPiece.Id;
+                .Blocks.First(b => b.XCoordinate == x_origin 
+                && b.YCoordinate == y_origin).ChessPiece.Id;
+
             var moveResult = await commandBus
                 .PublishAsync(
                 new MovePieceCommand(boardId, new Move(pieceId, (uint)x_des, (uint)y_des)),

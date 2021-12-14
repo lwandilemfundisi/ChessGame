@@ -36,14 +36,13 @@ namespace Chess.Tests
         public async Task TestCreatingBoard()
         {
             using var provider = _serviceCollection.BuildServiceProvider();
+            var commandBus = provider.GetRequiredService<ICommandBus>();
+            var queryProcessor = provider.GetRequiredService<IQueryProcessor>();
 
             var boardId = BoardId.New;
-            var commandBus = provider.GetRequiredService<ICommandBus>();
-            var commandResult = await commandBus
+            await commandBus
                 .PublishAsync(new CreateBoardCommand(boardId), CancellationToken.None);
-            Assert.IsTrue(commandResult.IsSuccess);
-
-            var queryProcessor = provider.GetRequiredService<IQueryProcessor>();
+            
             var queryResult = await queryProcessor
                 .ProcessAsync(new GetBoardQuery(boardId), CancellationToken.None);
             Assert.IsNotNull(queryResult);
