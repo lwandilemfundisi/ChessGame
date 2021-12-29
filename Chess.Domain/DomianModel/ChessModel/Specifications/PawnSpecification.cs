@@ -31,10 +31,8 @@ namespace Chess.Domain.DomianModel.ChessModel.Specifications
 
         protected override int NumberOfBlocksAllowedToMoveDiagonal => 1;
 
-        protected override bool IsCorrectDirection => (Piece.PieceColor.YAxisDirectionIsUp && IsDiagonalUp) 
-            || (!Piece.PieceColor.YAxisDirectionIsUp && IsDiagonalDown)
-            || (Piece.PieceColor.YAxisDirectionIsUp && IsMovingUp) 
-            || (!Piece.PieceColor.YAxisDirectionIsUp && IsMovingDown);
+        protected override bool IsCorrectDirection => (Piece.PieceColor.YAxisDirectionIsUp && (IsDiagonalUp || IsMovingUp))
+            || (!Piece.PieceColor.YAxisDirectionIsUp && (IsDiagonalDown || IsMovingDown));
 
         protected override Notification IsNotSatisfiedBecause(Move obj)
         {

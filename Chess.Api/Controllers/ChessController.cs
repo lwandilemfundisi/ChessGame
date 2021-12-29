@@ -52,10 +52,17 @@ namespace Chess.Api.Controllers
         [HttpPost("move")]
         public async Task<IActionResult> Move(MoveRequestModel model)
         {
-            return Ok(await _commandBus
+            if(ModelState.IsValid)
+            {
+                return Ok(await _commandBus
                 .PublishAsync(new MovePieceCommand(
-                    model.BoardId, 
+                    model.BoardId,
                     new MoveMapper(model).Map()), CancellationToken.None));
+            }
+            else
+            {
+                return BadRequest(ModelState.Values);
+            }
         }
     }
 }
