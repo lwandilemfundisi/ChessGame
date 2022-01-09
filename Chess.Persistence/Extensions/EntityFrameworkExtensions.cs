@@ -11,15 +11,17 @@ namespace Chess.Persistence.Extensions
 {
     public static class EntityFrameworkExtensions
     {
-        public static IDomainContainer ConfigureChessPersistence(
+        public static IDomainContainer ConfigureChessPersistence<TDbContext, TContextProvider>(
             this IDomainContainer domainContainer)
+            where TContextProvider : class, IDbContextProvider<TDbContext>
+            where TDbContext : DbContext
         {
             return domainContainer
                 .ConfigureEntityFramework(EntityFrameworkConfiguration.New)
-                .AddDbContextProvider<ChessContext, ChessContextProvider>()
+                .AddDbContextProvider<TDbContext, TContextProvider>()
                 .RegisterServices(sr =>
                 {
-                    sr.AddTransient<IPersistenceFactory, EntityFrameworkPersistenceFactory<ChessContext>>();
+                    sr.AddTransient<IPersistenceFactory, EntityFrameworkPersistenceFactory<TDbContext>>();
                 });
         }
         

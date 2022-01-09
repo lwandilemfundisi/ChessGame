@@ -1,5 +1,6 @@
 using AutoMapper;
 using Chess.Domain;
+using Chess.Persistence;
 using Chess.Persistence.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -42,7 +43,7 @@ namespace Chess.Api
                 .AddNewtonsoftJson();
             services
                 .ConfigureChessDomain()
-                .ConfigureChessPersistence();
+                .ConfigureChessPersistence<ChessContext, ChessContextProvider>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

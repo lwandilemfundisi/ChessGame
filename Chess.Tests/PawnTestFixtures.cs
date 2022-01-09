@@ -3,7 +3,8 @@ using Chess.Domain.DomianModel.ChessModel;
 using Chess.Domain.DomianModel.ChessModel.Commands;
 using Chess.Domain.DomianModel.ChessModel.Queries;
 using Chess.Domain.DomianModel.ChessModel.ValueObjects;
-using Chess.Tests.Extensions;
+using Chess.Persistence.Extensions;
+using Chess.Tests.Context;
 using Microservice.Framework.Domain.Commands;
 using Microservice.Framework.Domain.Exceptions;
 using Microservice.Framework.Domain.Queries;
@@ -20,7 +21,6 @@ namespace Chess.Tests
     [TestClass]
     public class PawnTestFixtures
     {
-        private IServiceProvider _provider;
         private IServiceCollection _serviceCollection;
 
         [TestInitialize]
@@ -30,7 +30,7 @@ namespace Chess.Tests
             _serviceCollection
                 .AddLogging(l => l.AddConsole())
                 .ConfigureChessDomain()
-                .ConfigureChessTestPersistence();
+                .ConfigureChessPersistence<ChessInMemoryContext, TestChessContextProvider>();
         }
 
         [TestMethod]
