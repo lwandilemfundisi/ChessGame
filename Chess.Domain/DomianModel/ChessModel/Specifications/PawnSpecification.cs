@@ -27,7 +27,7 @@ namespace Chess.Domain.DomianModel.ChessModel.Specifications
 
         #region Virtual Methods
 
-        protected override int NumberOfBlocksAllowedToMoveVertical => 2;
+        protected override int NumberOfBlocksAllowedToMoveVertical => Piece.HasMovedSinceStart ? 1 : 2;
 
         protected override int NumberOfBlocksAllowedToMoveDiagonal => 1;
 

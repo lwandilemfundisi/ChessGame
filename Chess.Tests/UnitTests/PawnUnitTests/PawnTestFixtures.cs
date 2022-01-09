@@ -1,8 +1,10 @@
-using Chess.Domain;
+﻿using Chess.Domain;
 using Chess.Domain.DomianModel.ChessModel;
 using Chess.Domain.DomianModel.ChessModel.Commands;
+using Chess.Domain.DomianModel.ChessModel.Entities;
 using Chess.Domain.DomianModel.ChessModel.Queries;
 using Chess.Domain.DomianModel.ChessModel.ValueObjects;
+using Chess.Domain.Extensions;
 using Chess.Persistence.Extensions;
 using Chess.Tests.Context;
 using Microservice.Framework.Domain.Commands;
@@ -11,12 +13,12 @@ using Microservice.Framework.Domain.Queries;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Chess.Tests
+namespace Chess.Tests.UnitTests.PawnUnitTests
 {
     [TestClass]
     public class PawnTestFixtures
@@ -36,68 +38,101 @@ namespace Chess.Tests
         [TestMethod]
         public async Task TestMovePawnOneUpSuccess()
         {
-            await TestMove(2, 2, 2, 3);
+            var blocks = ChessExtensions
+                    .BuildBoard()
+                    .PlaceWhitePawns();
+
+            await TestMove(blocks, 2, 2, 2, 3);
         }
 
         [TestMethod]
         public async Task TestMovePawnTwoUpSuccess()
         {
-            await TestMove(2, 2, 2, 4);
+            var blocks = ChessExtensions
+                    .BuildBoard()
+                    .PlaceWhitePawns();
+
+            await TestMove(blocks, 2, 2, 2, 4);
         }
 
         [TestMethod]
         [ExpectedException(typeof(DomainError))]
         public async Task TestMovePawnMoreThanTwoFail()
         {
-            await TestMove(2, 2, 2, 5);
+            var blocks = ChessExtensions
+                    .BuildBoard()
+                    .PlaceWhitePawns();
+
+            await TestMove(blocks, 2, 2, 2, 5);
         }
 
         [TestMethod]
         [ExpectedException(typeof(DomainError))]
         public async Task TestMovePawnDiagonalUpRightFail()
         {
-            await TestMove(2, 2, 3, 3);
+            var blocks = ChessExtensions
+                    .BuildBoard()
+                    .PlaceWhitePawns();
+
+            await TestMove(blocks, 2, 2, 3, 3);
         }
 
         [TestMethod]
         [ExpectedException(typeof(DomainError))]
         public async Task TestMovePawnDiagonalUpLeftFail()
         {
-            await TestMove(2, 2, 1, 3);
+            var blocks = ChessExtensions
+                    .BuildBoard()
+                    .PlaceWhitePawns();
+
+            await TestMove(blocks, 2, 2, 1, 3);
         }
 
         [TestMethod]
         [ExpectedException(typeof(DomainError))]
         public async Task TestMovePawnDiagonalDownLeftFail()
         {
-            await TestMove(2, 2, 1, 1);
+            var blocks = ChessExtensions
+                .BuildBoard()
+                .PlaceWhitePawns();
+
+            await TestMove(blocks, 2, 2, 1, 1);
         }
 
         [TestMethod]
         [ExpectedException(typeof(DomainError))]
         public async Task TestMovePawnDiagonalDownRightFail()
         {
-            await TestMove(2, 2, 3, 1);
+            var blocks = ChessExtensions
+                .BuildBoard()
+                .PlaceWhitePawns();
+
+            await TestMove(blocks, 2, 2, 3, 1);
         }
 
         #region Private Methods
 
-        private async Task TestMove(int x_origin, int y_origin, int x_des, int y_des)
+        private async Task TestMove(
+            IReadOnlyList<Block> blocks,
+            int x_origin,
+            int y_origin,
+            int x_des,
+            int y_des)
         {
             using var provider = _serviceCollection.BuildServiceProvider();
             var commandBus = provider.GetRequiredService<ICommandBus>();
             var queryProcessor = provider.GetRequiredService<IQueryProcessor>();
 
             var boardId = BoardId.New;
-            
+
             await commandBus
-                .PublishAsync(new CreateBoardCommand(boardId), CancellationToken.None);
-            
+                .PublishAsync(new CreateBoardCommand(boardId, blocks), CancellationToken.None);
+
             var queryResult = await queryProcessor
                 .ProcessAsync(new GetBoardQuery(boardId), CancellationToken.None);
 
             var pieceId = queryResult
-                .Blocks.First(b => b.XCoordinate == x_origin 
+                .Blocks.First(b => b.XCoordinate == x_origin
                 && b.YCoordinate == y_origin).ChessPiece.Id;
 
             var moveResult = await commandBus

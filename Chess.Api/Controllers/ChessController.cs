@@ -5,6 +5,7 @@ using Chess.Domain.DomianModel.ChessModel;
 using Chess.Domain.DomianModel.ChessModel.Commands;
 using Chess.Domain.DomianModel.ChessModel.Queries;
 using Chess.Domain.DomianModel.ChessModel.ValueObjects;
+using Chess.Domain.Extensions;
 using Microservice.Framework.Domain.Commands;
 using Microservice.Framework.Domain.Queries;
 using Microsoft.AspNetCore.Mvc;
@@ -39,7 +40,10 @@ namespace Chess.Api.Controllers
         public async Task<IActionResult> CreateBoard()
         {
             return Ok(await _commandBus
-                .PublishAsync(new CreateBoardCommand(BoardId.New), CancellationToken.None));
+                .PublishAsync(
+                new CreateBoardCommand(
+                    BoardId.New, 
+                    ChessExtensions.BuildBoard().PlaceAllPieces()), CancellationToken.None));
         }
 
         [HttpGet("getboard")]

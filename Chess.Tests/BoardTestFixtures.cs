@@ -3,6 +3,7 @@ using Chess.Domain.DomianModel.ChessModel;
 using Chess.Domain.DomianModel.ChessModel.Commands;
 using Chess.Domain.DomianModel.ChessModel.Queries;
 using Chess.Domain.DomianModel.ChessModel.ValueObjects;
+using Chess.Domain.Extensions;
 using Chess.Persistence.Extensions;
 using Chess.Tests.Context;
 using Microservice.Framework.Domain.Commands;
@@ -41,8 +42,13 @@ namespace Chess.Tests
             var queryProcessor = provider.GetRequiredService<IQueryProcessor>();
 
             var boardId = BoardId.New;
+
             await commandBus
-                .PublishAsync(new CreateBoardCommand(boardId), CancellationToken.None);
+                .PublishAsync(
+                new CreateBoardCommand(
+                    boardId, 
+                    ChessExtensions.BuildBoard().PlaceAllPieces()), 
+                CancellationToken.None);
             
             var queryResult = await queryProcessor
                 .ProcessAsync(new GetBoardQuery(boardId), CancellationToken.None);
