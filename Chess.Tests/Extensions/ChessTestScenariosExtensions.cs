@@ -56,5 +56,28 @@ namespace Chess.Tests.Extensions
 
             return blocks;
         }
+
+        public static IReadOnlyList<Block> PlaceCannotLeapOverPieceScenario(this IReadOnlyList<Block> blocks)
+        {
+            blocks.PlacePiece(1, 2, new ChessPiece
+            {
+                Id = ChessPieceId.New,
+                PieceColor = Colors.Of().White,
+                PieceName = PieceNames.Of().Pawn,
+                XCoordinate = 1,
+                YCoordinate = 2
+            });
+
+            blocks.PlacePiece(1, 3, new ChessPiece
+            {
+                Id = ChessPieceId.New,
+                PieceColor = Colors.Of().White,
+                PieceName = PieceNames.Of().Pawn,
+                XCoordinate = 1,
+                YCoordinate = 3
+            });
+
+            return blocks;
+        }        
     }
 }

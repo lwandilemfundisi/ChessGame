@@ -132,6 +132,17 @@ namespace Chess.Tests.UnitTests.PawnUnitTests
             await TestMove(blocks, 1, 2, 2, 3);
         }
 
+        [TestMethod]
+        [ExpectedException(typeof(DomainError))]
+        public async Task TestPawnCannotOverPiece()
+        {
+            var blocks = ChessExtensions
+                .BuildBoard()
+                .PlaceCannotLeapOverPieceScenario();
+
+            await TestMove(blocks, 1, 2, 1, 4);
+        }
+
         #region Private Methods
 
         private async Task TestMove(

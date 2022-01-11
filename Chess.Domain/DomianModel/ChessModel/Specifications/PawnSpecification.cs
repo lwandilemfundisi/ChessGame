@@ -39,7 +39,11 @@ namespace Chess.Domain.DomianModel.ChessModel.Specifications
             Move = obj;
             var notification = Notification.CreateEmpty();
 
-            if(IsMovingLOrR)
+            if(IsLeaping)
+                notification.AddError(new Message($"move was invalid for a {Piece.PieceName.Text}. " +
+                        $"You cannot leap over another piece!"));
+
+            if (IsMovingLOrR)
             {
                 if (!IsValidDiagonal)
                     notification.AddError(new Message($"move was invalid for a {Piece.PieceName.Text}."));
