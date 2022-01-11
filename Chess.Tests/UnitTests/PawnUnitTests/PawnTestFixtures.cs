@@ -7,6 +7,7 @@ using Chess.Domain.DomianModel.ChessModel.ValueObjects;
 using Chess.Domain.Extensions;
 using Chess.Persistence.Extensions;
 using Chess.Tests.Context;
+using Chess.Tests.Extensions;
 using Microservice.Framework.Domain.Commands;
 using Microservice.Framework.Domain.Exceptions;
 using Microservice.Framework.Domain.Queries;
@@ -108,6 +109,27 @@ namespace Chess.Tests.UnitTests.PawnUnitTests
                 .PlaceWhitePawns();
 
             await TestMove(blocks, 2, 2, 3, 1);
+        }
+
+        [TestMethod]
+        public async Task TestPawnCaptureOpponentPiece()
+        {
+            var blocks = ChessExtensions
+                .BuildBoard()
+                .PlacePawnValidCaptureScenario();
+
+            await TestMove(blocks, 1, 2, 2, 3);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(DomainError))]
+        public async Task TestPawnCannotCaptureOwnPiece()
+        {
+            var blocks = ChessExtensions
+                .BuildBoard()
+                .PlacePawnInvalidCaptureScenario();
+
+            await TestMove(blocks, 1, 2, 2, 3);
         }
 
         #region Private Methods
