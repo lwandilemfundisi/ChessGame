@@ -1,6 +1,7 @@
 ﻿using Chess.Arithmetic;
 using Chess.Domain.DomianModel.ChessModel.Entities;
 using Chess.Domain.DomianModel.ChessModel.ValueObjects;
+using Chess.Domain.DomianModel.ChessModel.ValueObjects.LookupValueObjects;
 using Microservice.Framework.Common;
 using Microservice.Framework.Domain;
 using System;
@@ -121,24 +122,14 @@ namespace Chess.Domain.DomianModel.ChessModel.Specifications
             var x_des = (int)Move.NewXCoordinate;
             var y_des = (int)Move.NewYCoordinate;
 
-            var x_decider = (x_origin - x_des) == 0 ? 0 : (x_origin - x_des) / (-(x_origin - x_des));
-            var y_decider = (y_origin - y_des) == 0 ? 0 : (y_origin - y_des) / (-(y_origin - y_des));
+            var x_decider = (x_origin - x_des) == 0 ? 0 : (x_origin - x_des) / (x_origin - x_des);
+            var y_decider = (y_des - y_origin) == 0 ? 0 : (y_des - y_origin) / (Piece.PieceColor.IsIn(Colors.Of().Black) ? -(y_des - y_origin) : (y_des - y_origin));
 
-            var x_control = 0;
-            var y_control = 0;
+            var x_control = x_origin + x_decider;
+            var y_control = y_origin + y_decider;
             do
             {
-                if(x_control == 0)
-                    x_control = x_origin + x_decider;
-                else
-                    x_control = x_control + x_decider;
-
-                if (y_control == 0)
-                    y_control = y_origin - y_decider;
-                else
-                    y_control = y_control - y_decider;
-
-                if(x_control < 1 || y_control < 1 || x_control > 8 || y_control > 8)
+                if (x_control < 1 || y_control < 1 || x_control > 8 || y_control > 8)
                     return false;
 
                 if (x_control == x_des && y_control == y_des)
@@ -146,7 +137,10 @@ namespace Chess.Domain.DomianModel.ChessModel.Specifications
 
                 if (Board.First(b => b.XCoordinate == x_control && b.YCoordinate == y_control).ChessPiece.IsNotNull())
                     return true;
-                    
+
+                x_control = x_control + x_decider;
+                y_control = y_control + y_decider;
+
             }
             while (true);
         }

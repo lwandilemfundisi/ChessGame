@@ -22,7 +22,7 @@ using System.Threading.Tasks;
 namespace Chess.Tests.UnitTests.PawnUnitTests
 {
     [TestClass]
-    public class PawnTestFixtures
+    public class WhitePawnTestFixtures
     {
         private IServiceCollection _serviceCollection;
 
@@ -116,7 +116,7 @@ namespace Chess.Tests.UnitTests.PawnUnitTests
         {
             var blocks = ChessExtensions
                 .BuildBoard()
-                .PlacePawnValidCaptureScenario();
+                .PlaceWhitePawnValidCaptureScenario();
 
             await TestMove(blocks, 1, 2, 2, 3);
         }
@@ -127,7 +127,7 @@ namespace Chess.Tests.UnitTests.PawnUnitTests
         {
             var blocks = ChessExtensions
                 .BuildBoard()
-                .PlacePawnInvalidCaptureScenario();
+                .PlaceWhitePawnInvalidCaptureScenario();
 
             await TestMove(blocks, 1, 2, 2, 3);
         }
@@ -138,7 +138,7 @@ namespace Chess.Tests.UnitTests.PawnUnitTests
         {
             var blocks = ChessExtensions
                 .BuildBoard()
-                .PlaceCannotLeapOverPieceScenario();
+                .PlaceCannotLeapOverPieceWhiteScenario();
 
             await TestMove(blocks, 1, 2, 1, 4);
         }

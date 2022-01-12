@@ -11,7 +11,30 @@ namespace Chess.Tests.Extensions
 {
     public static class ChessTestScenariosExtensions
     {
-        public static IReadOnlyList<Block> PlacePawnValidCaptureScenario(this IReadOnlyList<Block> blocks)
+        public static IReadOnlyList<Block> PlaceBlackPawnValidCaptureScenario(this IReadOnlyList<Block> blocks)
+        {
+            blocks.PlacePiece(1, 7, new ChessPiece
+            {
+                Id = ChessPieceId.New,
+                PieceColor = Colors.Of().Black,
+                PieceName = PieceNames.Of().Pawn,
+                XCoordinate = 1,
+                YCoordinate = 7
+            });
+
+            blocks.PlacePiece(2, 6, new ChessPiece
+            {
+                Id = ChessPieceId.New,
+                PieceColor = Colors.Of().White,
+                PieceName = PieceNames.Of().Pawn,
+                XCoordinate = 2,
+                YCoordinate = 6
+            });
+
+            return blocks;
+        }
+
+        public static IReadOnlyList<Block> PlaceWhitePawnValidCaptureScenario(this IReadOnlyList<Block> blocks)
         {
             blocks.PlacePiece(1, 2, new ChessPiece 
             {
@@ -34,7 +57,30 @@ namespace Chess.Tests.Extensions
             return blocks;
         }
 
-        public static IReadOnlyList<Block> PlacePawnInvalidCaptureScenario(this IReadOnlyList<Block> blocks)
+        public static IReadOnlyList<Block> PlaceBlackPawnInvalidCaptureScenario(this IReadOnlyList<Block> blocks)
+        {
+            blocks.PlacePiece(1, 7, new ChessPiece
+            {
+                Id = ChessPieceId.New,
+                PieceColor = Colors.Of().Black,
+                PieceName = PieceNames.Of().Pawn,
+                XCoordinate = 1,
+                YCoordinate = 7
+            });
+
+            blocks.PlacePiece(2, 6, new ChessPiece
+            {
+                Id = ChessPieceId.New,
+                PieceColor = Colors.Of().Black,
+                PieceName = PieceNames.Of().Pawn,
+                XCoordinate = 2,
+                YCoordinate = 6
+            });
+
+            return blocks;
+        }
+
+        public static IReadOnlyList<Block> PlaceWhitePawnInvalidCaptureScenario(this IReadOnlyList<Block> blocks)
         {
             blocks.PlacePiece(1, 2, new ChessPiece
             {
@@ -57,7 +103,30 @@ namespace Chess.Tests.Extensions
             return blocks;
         }
 
-        public static IReadOnlyList<Block> PlaceCannotLeapOverPieceScenario(this IReadOnlyList<Block> blocks)
+        public static IReadOnlyList<Block> PlaceCannotLeapOverPieceBlackScenario(this IReadOnlyList<Block> blocks)
+        {
+            blocks.PlacePiece(1, 7, new ChessPiece
+            {
+                Id = ChessPieceId.New,
+                PieceColor = Colors.Of().Black,
+                PieceName = PieceNames.Of().Pawn,
+                XCoordinate = 1,
+                YCoordinate = 7
+            });
+
+            blocks.PlacePiece(1, 6, new ChessPiece
+            {
+                Id = ChessPieceId.New,
+                PieceColor = Colors.Of().Black,
+                PieceName = PieceNames.Of().Pawn,
+                XCoordinate = 1,
+                YCoordinate = 6
+            });
+
+            return blocks;
+        }
+
+        public static IReadOnlyList<Block> PlaceCannotLeapOverPieceWhiteScenario(this IReadOnlyList<Block> blocks)
         {
             blocks.PlacePiece(1, 2, new ChessPiece
             {
@@ -78,6 +147,6 @@ namespace Chess.Tests.Extensions
             });
 
             return blocks;
-        }        
+        }
     }
 }
