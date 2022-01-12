@@ -134,7 +134,7 @@ namespace Chess.Tests.UnitTests.PawnUnitTests
 
         [TestMethod]
         [ExpectedException(typeof(DomainError))]
-        public async Task TestPawnCannotOverPiece()
+        public async Task TestPawnCannotLeapOverPiece()
         {
             var blocks = ChessExtensions
                 .BuildBoard()

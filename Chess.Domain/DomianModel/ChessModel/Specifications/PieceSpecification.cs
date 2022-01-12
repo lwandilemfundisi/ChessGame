@@ -116,111 +116,39 @@ namespace Chess.Domain.DomianModel.ChessModel.Specifications
             if (CanLeapOverPieces)
                 return true;
 
-            if (IsValidDiagonal)
+            var x_origin = (int)Piece.XCoordinate;
+            var y_origin = (int)Piece.YCoordinate;
+            var x_des = (int)Move.NewXCoordinate;
+            var y_des = (int)Move.NewYCoordinate;
+
+            var x_decider = (x_origin - x_des) == 0 ? 0 : (x_origin - x_des) / (-(x_origin - x_des));
+            var y_decider = (y_origin - y_des) == 0 ? 0 : (y_origin - y_des) / (-(y_origin - y_des));
+
+            var x_control = 0;
+            var y_control = 0;
+            do
             {
-                var x_origin = Piece.XCoordinate;
-                var y_origin = Piece.YCoordinate;
-                var x_des = Move.NewXCoordinate;
-                var y_des = Move.NewYCoordinate;
+                if(x_control == 0)
+                    x_control = x_origin + x_decider;
+                else
+                    x_control = x_control + x_decider;
 
-                if (IsDiagonalUpLeft)
-                {
-                    do
-                    {
-                        x_origin--;
-                        y_origin++;
+                if (y_control == 0)
+                    y_control = y_origin - y_decider;
+                else
+                    y_control = y_control - y_decider;
 
-                        return Board
-                            .First(b =>
-                                b.XCoordinate == x_origin
-                                && b.YCoordinate == y_origin)
-                            .ChessPiece.IsNull();
-                    }
-                    while (x_origin >= x_des && y_origin <= y_des);
-                }
-                else if (IsDiagonalUpRight)
-                {
-                    do
-                    {
-                        x_origin++;
-                        y_origin++;
+                if(x_control < 1 || y_control < 1 || x_control > 8 || y_control > 8)
+                    return false;
 
-                        return Board
-                            .First(b =>
-                                b.XCoordinate == x_origin
-                                && b.YCoordinate == y_origin)
-                            .ChessPiece.IsNull();
-                    }
-                    while (x_origin <= x_des && y_origin <= y_des);
-                }
-                else if (IsDiagonalDownLeft)
-                {
-                    do
-                    {
-                        x_origin--;
-                        y_origin--;
+                if (x_control == x_des && y_control == y_des)
+                    return false;
 
-                        return Board
-                            .First(b =>
-                                b.XCoordinate == x_origin
-                                && b.YCoordinate == y_origin)
-                            .ChessPiece.IsNull();
-                    }
-                    while (x_origin >= x_des && y_origin >= y_des);
-                }
-                else if (IsDiagonalDownRight)
-                {
-                    do
-                    {
-                        x_origin++;
-                        y_origin--;
-
-                        return Board
-                            .First(b =>
-                                b.XCoordinate == x_origin
-                                && b.YCoordinate == y_origin)
-                            .ChessPiece.IsNull();
-                    }
-                    while (x_origin <= x_des && y_origin >= y_des);
-                }
+                if (Board.First(b => b.XCoordinate == x_control && b.YCoordinate == y_control).ChessPiece.IsNotNull())
+                    return true;
+                    
             }
-            else
-            {
-                if (IsMovingUp)
-                {
-                    for(int y_origin = (int)Piece.YCoordinate + 1; y_origin <= Move.NewYCoordinate; y_origin++)
-                    {
-                        if (Board.First(b => b.XCoordinate == Piece.XCoordinate && b.YCoordinate == y_origin).ChessPiece.IsNotNull())
-                            return true;
-                    }
-                }
-                else if (IsMovingDown)
-                {
-                    for (int y_origin = (int)Piece.YCoordinate - 1; y_origin >= Move.NewYCoordinate; y_origin--)
-                    {
-                        if (Board.First(b => b.XCoordinate == Piece.XCoordinate && b.YCoordinate == y_origin).ChessPiece.IsNotNull())
-                            return true;
-                    }
-                }
-                else if (IsMovingLeft)
-                {
-                    for (int x_origin = (int)Piece.XCoordinate - 1; x_origin >= Move.NewXCoordinate; x_origin--)
-                    {
-                        if (Board.First(b => b.YCoordinate == Piece.YCoordinate && b.XCoordinate == x_origin).ChessPiece.IsNotNull())
-                            return true;
-                    }
-                }
-                else if(IsMovingRight)
-                {
-                    for (int x_origin = (int)Piece.XCoordinate + 1; x_origin <= Move.NewXCoordinate; x_origin++)
-                    {
-                        if (Board.First(b => b.YCoordinate == Piece.YCoordinate && b.XCoordinate == x_origin).ChessPiece.IsNotNull())
-                            return true;
-                    }
-                }
-            }
-
-            return false;
+            while (true);
         }
 
         #endregion
