@@ -117,32 +117,33 @@ namespace Chess.Domain.DomianModel.ChessModel.Specifications
             if (CanLeapOverPieces)
                 return true;
 
-            var x_origin = (int)Piece.XCoordinate;
-            var y_origin = (int)Piece.YCoordinate;
-            var x_des = (int)Move.NewXCoordinate;
-            var y_des = (int)Move.NewYCoordinate;
+            return Leaping(
+                (int)Piece.XCoordinate, 
+                (int)Piece.YCoordinate, 
+                (int)Move.NewXCoordinate, 
+                (int)Move.NewYCoordinate);
+        }
 
-            var x_decider = (x_origin - x_des) == 0 ? 0 : (x_origin - x_des) / (x_origin - x_des);
-            var y_decider = (y_des - y_origin) == 0 ? 0 : (y_des - y_origin) / (Piece.PieceColor.IsIn(Colors.Of().Black) ? -(y_des - y_origin) : (y_des - y_origin));
+        private int IncrementOrDecrement(int origin, int des)
+        {
+            return origin + ((origin - des) == 0 ? 0 : (origin > des) ? -1 : 1);
+        }
 
-            var x_control = x_origin + x_decider;
-            var y_control = y_origin + y_decider;
-            do
-            {
-                if (x_control < 1 || y_control < 1 || x_control > 8 || y_control > 8)
-                    return false;
+        private bool Leaping(int x, int y, int x_des, int y_des)
+        {
+            int x_itr = IncrementOrDecrement(x, x_des);
+            int y_itr = IncrementOrDecrement(y, y_des);
 
-                if (x_control == x_des && y_control == y_des)
-                    return false;
+            if (x_itr < 1 || y_itr < 1 || x_itr > 8 || y_itr > 8)
+                return false;
 
-                if (Board.First(b => b.XCoordinate == x_control && b.YCoordinate == y_control).ChessPiece.IsNotNull())
-                    return true;
+            if (x_itr == x_des && y_itr == y_des)
+                return false;
 
-                x_control = x_control + x_decider;
-                y_control = y_control + y_decider;
+            if (Board.First(b => b.XCoordinate == x_itr && b.YCoordinate == y_itr).ChessPiece.IsNotNull())
+                return true;
 
-            }
-            while (true);
+            return Leaping(x_itr, y_itr, x_des, y_des);
         }
 
         #endregion
