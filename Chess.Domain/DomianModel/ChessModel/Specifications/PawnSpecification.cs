@@ -36,18 +36,16 @@ namespace Chess.Domain.DomianModel.ChessModel.Specifications
 
         protected override Notification IsNotSatisfiedBecause(Move obj)
         {
-            Move = obj;
-            var notification = Notification.CreateEmpty();
+            var notification = base.IsNotSatisfiedBecause(obj);
 
-            if(IsLeaping)
-                notification.AddError(new Message($"move was invalid for a {Piece.PieceName.Text}. " +
-                        $"You cannot leap over another piece!"));
+            if (notification.HasErrors)
+                return notification;
 
             if (IsMovingLOrR)
             {
                 if (!IsValidDiagonal)
                     notification.AddError(new Message($"move was invalid for a {Piece.PieceName.Text}."));
-                else if(!DestinationIsOccupied)
+                else if (!DestinationIsOccupied)
                     notification.AddError(new Message($"move was invalid for a {Piece.PieceName.Text}. " +
                         $"You can only move diagonal when capturing opponent's piece or perfoming enpassant!"));
                 else if (!PieceAtDestinationIsOpponent)
@@ -56,13 +54,13 @@ namespace Chess.Domain.DomianModel.ChessModel.Specifications
             }
             else
             {
-                if(!IsCorrectDirection)
+                if (!IsCorrectDirection)
                     notification.AddError(new Message($"move was invalid for a {Piece.PieceName.Text}. " +
                         $"You can only move {(Piece.PieceColor.YAxisDirectionIsUp ? "up" : "down")}!"));
                 else if (DestinationIsOccupied)
                     notification.AddError(new Message($"move was invalid for a {Piece.PieceName.Text}. " +
                         $"You cannot occupy a block that already has a piece on!"));
-                else if(!IsValidUpOrDown)
+                else if (!IsValidUpOrDown)
                     notification.AddError(new Message($"move was invalid for a {Piece.PieceName.Text}. " +
                         $"You cannot move {(Piece.PieceColor.YAxisDirectionIsUp ? "up" : "down")} more than {NumberOfBlocksAllowedToMoveVertical}"));
             }

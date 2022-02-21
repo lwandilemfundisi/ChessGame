@@ -4,6 +4,7 @@ using Chess.Domain.DomianModel.ChessModel.ValueObjects;
 using Chess.Domain.DomianModel.ChessModel.ValueObjects.LookupValueObjects;
 using Microservice.Framework.Common;
 using Microservice.Framework.Domain;
+using Microservice.Framework.Domain.Rules.Notifications;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -111,6 +112,18 @@ namespace Chess.Domain.DomianModel.ChessModel.Specifications
         #endregion
 
         #region Methods
+
+        protected override Notification IsNotSatisfiedBecause(Move obj)
+        {
+            Move = obj;
+            var notification = Notification.CreateEmpty();
+
+            if (IsLeaping)
+                notification.AddError(new Message($"move was invalid for a {Piece.PieceName.Text}. " +
+                        $"You cannot leap over another piece!"));
+
+            return notification;
+        }
 
         private bool CheckLeaping()
         {
