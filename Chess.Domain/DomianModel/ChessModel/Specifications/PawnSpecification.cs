@@ -1,14 +1,7 @@
-﻿using Chess.Arithmetic;
-using Chess.Domain.DomianModel.ChessModel.Entities;
+﻿using Chess.Domain.DomianModel.ChessModel.Entities;
 using Chess.Domain.DomianModel.ChessModel.ValueObjects;
-using Microservice.Framework.Common;
-using Microservice.Framework.Domain;
 using Microservice.Framework.Domain.Rules.Notifications;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Chess.Domain.DomianModel.ChessModel.Specifications
 {
@@ -36,7 +29,8 @@ namespace Chess.Domain.DomianModel.ChessModel.Specifications
 
         protected override Notification IsNotSatisfiedBecause(Move obj)
         {
-            var notification = base.IsNotSatisfiedBecause(obj);
+            var notification = base
+                .IsNotSatisfiedBecause(obj);
 
             if (notification.HasErrors)
                 return notification;
@@ -89,7 +83,23 @@ namespace Chess.Domain.DomianModel.ChessModel.Specifications
 
             protected override Notification IsNotSatisfiedBecause(Move obj)
             {
-                throw new NotImplementedException();
+                var notification = base
+                    .IsNotSatisfiedBecause(obj);
+
+                if (notification.HasErrors)
+                    return notification;
+
+                if (!IsValidDiagonal)
+                    notification.AddError(new Message($"move was invalid for a {Piece.PieceName.Text}." +
+                        $"You cannot perform enpassant! Invalid diagonal move!"));
+                else if(DestinationIsOccupied)
+                    notification.AddError(new Message($"move was invalid for a {Piece.PieceName.Text}. " +
+                        $"You cannot perform enpassant! Destination block is occupied!"));
+
+
+
+
+                return notification;
             }
 
             #endregion

@@ -65,7 +65,7 @@ namespace Chess.Domain.DomianModel.ChessModel
             //If we got at this point, the move was valid
             Move(move);
 
-            Emit(new MovedPieceEvent());
+            Emit(new MovedPieceEvent(move));
         }
 
         public void ResetBoard()

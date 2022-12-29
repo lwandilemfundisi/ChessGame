@@ -1,10 +1,6 @@
-﻿using Microservice.Framework.Domain.Events;
+﻿using Chess.Domain.DomianModel.ChessModel.ValueObjects;
+using Microservice.Framework.Domain.Events;
 using Microservice.Framework.Domain.Events.AggregateEvents;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Chess.Domain.DomianModel.ChessModel.Events
 {
@@ -13,9 +9,16 @@ namespace Chess.Domain.DomianModel.ChessModel.Events
     {
         #region Constructors
 
-        public MovedPieceEvent()
+        public MovedPieceEvent(Move move)
         {
+            Move = move;
         }
+
+        #endregion
+
+        #region Properties
+
+        public Move Move { get; }
 
         #endregion
     }

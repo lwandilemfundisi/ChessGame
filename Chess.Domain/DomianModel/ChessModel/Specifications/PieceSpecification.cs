@@ -1,15 +1,12 @@
 ﻿using Chess.Arithmetic;
 using Chess.Domain.DomianModel.ChessModel.Entities;
 using Chess.Domain.DomianModel.ChessModel.ValueObjects;
-using Chess.Domain.DomianModel.ChessModel.ValueObjects.LookupValueObjects;
 using Microservice.Framework.Common;
 using Microservice.Framework.Domain;
 using Microservice.Framework.Domain.Rules.Notifications;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Chess.Domain.DomianModel.ChessModel.Specifications
 {
@@ -153,7 +150,8 @@ namespace Chess.Domain.DomianModel.ChessModel.Specifications
             if (x_itr == x_des && y_itr == y_des)
                 return false;
 
-            if (Board.First(b => b.XCoordinate == x_itr && b.YCoordinate == y_itr).ChessPiece.IsNotNull())
+            if (Board.First(b => b.XCoordinate == x_itr 
+            && b.YCoordinate == y_itr).ChessPiece.IsNotNull())
                 return true;
 
             return Leaping(x_itr, y_itr, x_des, y_des);
