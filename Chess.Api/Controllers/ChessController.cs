@@ -46,6 +46,21 @@ namespace Chess.Api.Controllers
                     ChessExtensions.BuildBoard().PlaceAllPieces(), requireKings: true), CancellationToken.None));
         }
 
+        [HttpPost("newgame")]
+        public async Task<IActionResult> NewGame()
+        {
+            var boardId = BoardId.New;
+            var result = await _commandBus.PublishAsync(
+                new CreateBoardCommand(boardId, ChessExtensions.BuildBoard().PlaceAllPieces(), requireKings: true),
+                CancellationToken.None);
+
+            if (!result.IsSuccess)
+                return BadRequest(result);
+
+            var board = await _queryProcessor.ProcessAsync(new GetBoardQuery(boardId), CancellationToken.None);
+            return Ok(board);
+        }
+
         [HttpGet("getboard")]
         public async Task<IActionResult> GetBoard([FromQuery] string boardId)
         {

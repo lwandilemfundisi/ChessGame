@@ -44,6 +44,17 @@ namespace Chess.Api
             services
                 .ConfigureChessDomain()
                 .ConfigureChessPersistence<ChessContext, ChessContextProvider>();
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: "React",
+                                  policy =>
+                                  {
+                                      policy.WithOrigins("https://localhost:3000")
+                                      .AllowAnyHeader()
+                                            .AllowAnyMethod()
+                                            .AllowCredentials();
+                                  });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -55,7 +66,7 @@ namespace Chess.Api
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Chess.Api v1"));
             }
-
+            app.UseCors("React");
             app.UseHttpsRedirection();
 
             app.UseRouting();
