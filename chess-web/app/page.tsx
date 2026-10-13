@@ -61,7 +61,6 @@ function statusLabel(status?: string) {
 }
 
 async function api<T>(path: string, init?: RequestInit): Promise<T> {
-  console.info('logging');
   const response = await fetch(`/api/chess/${path}`, {
     ...init,
     headers: { ...(init?.body ? { "Content-Type": "application/json" } : {}), ...init?.headers },
