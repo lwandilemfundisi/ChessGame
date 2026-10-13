@@ -18,10 +18,12 @@ namespace Chess.Domain.DomianModel.ChessModel.Commands
 
         public CreateBoardCommand(
             BoardId boardId, 
-            IReadOnlyList<Block> blocks)
+            IReadOnlyList<Block> blocks,
+            bool requireKings = false)
             : base(boardId)
         {
             Blocks = blocks;
+            RequireKings = requireKings;
         }
 
         #endregion
@@ -29,6 +31,7 @@ namespace Chess.Domain.DomianModel.ChessModel.Commands
         #region Properties
 
         public IReadOnlyList<Block> Blocks { get; }
+        public bool RequireKings { get; }
 
         #endregion
     }
@@ -44,7 +47,7 @@ namespace Chess.Domain.DomianModel.ChessModel.Commands
             CancellationToken cancellationToken)
         {
             aggregate
-                .CreateBoard(command.Blocks);
+                .CreateBoard(command.Blocks, command.RequireKings);
 
             return Task.FromResult(ExecutionResult.Success(aggregate.Id));
         }

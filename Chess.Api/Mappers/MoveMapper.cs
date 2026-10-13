@@ -27,7 +27,7 @@ namespace Chess.Api.Mappers
             if (_model.IsNull())
                 throw new ArgumentException($"{GetType().PrettyPrint()} : Cannot map null model");
 
-            return new Move(_model.ChessPieceId, _model.NewXCoordinate, _model.NewYCoordinate) { };
+            return new Move(_model.ChessPieceId, _model.NewXCoordinate, _model.NewYCoordinate, _model.PromotionPieceName);
         }
     }
 }

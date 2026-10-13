@@ -23,6 +23,26 @@ namespace Chess.Persistence.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<long>("EnPassantTargetX")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("EnPassantTargetY")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("GameStatus")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("HalfMoveClock")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PositionHistory")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("WhiteToMove")
+                        .HasColumnType("bit");
+
                     b.Property<int>("Version")
                         .HasColumnType("int");
 

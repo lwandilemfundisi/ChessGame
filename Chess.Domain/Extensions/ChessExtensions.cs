@@ -199,12 +199,12 @@ namespace Chess.Domain.Extensions
 
         public static IReadOnlyList<Block> PlaceBlackKing(this IReadOnlyList<Block> blocks)
         {
-            PlacePiece(blocks, 4, 8, new ChessPiece
+            PlacePiece(blocks, 5, 8, new ChessPiece
             {
                 Id = ChessPieceId.New,
                 PieceColor = Colors.Of().Black,
                 PieceName = PieceNames.Of().King,
-                XCoordinate = 4,
+                XCoordinate = 5,
                 YCoordinate = 8
             });
 
@@ -213,12 +213,12 @@ namespace Chess.Domain.Extensions
 
         public static IReadOnlyList<Block> PlaceWhiteKing(this IReadOnlyList<Block> blocks)
         {
-            PlacePiece(blocks, 4, 1, new ChessPiece
+            PlacePiece(blocks, 5, 1, new ChessPiece
             {
                 Id = ChessPieceId.New,
                 PieceColor = Colors.Of().White,
                 PieceName = PieceNames.Of().King,
-                XCoordinate = 4,
+                XCoordinate = 5,
                 YCoordinate = 1
             });
 
@@ -227,12 +227,12 @@ namespace Chess.Domain.Extensions
 
         public static IReadOnlyList<Block> PlaceBlackQueen(this IReadOnlyList<Block> blocks)
         {
-            PlacePiece(blocks, 5, 8, new ChessPiece
+            PlacePiece(blocks, 4, 8, new ChessPiece
             {
                 Id = ChessPieceId.New,
                 PieceColor = Colors.Of().Black,
                 PieceName = PieceNames.Of().Queen,
-                XCoordinate = 5,
+                XCoordinate = 4,
                 YCoordinate = 8
             });
 
@@ -241,12 +241,12 @@ namespace Chess.Domain.Extensions
 
         public static IReadOnlyList<Block> PlaceWhiteQueen(this IReadOnlyList<Block> blocks)
         {
-            PlacePiece(blocks, 5, 1, new ChessPiece
+            PlacePiece(blocks, 4, 1, new ChessPiece
             {
                 Id = ChessPieceId.New,
                 PieceColor = Colors.Of().White,
                 PieceName = PieceNames.Of().Queen,
-                XCoordinate = 5,
+                XCoordinate = 4,
                 YCoordinate = 1
             });
 

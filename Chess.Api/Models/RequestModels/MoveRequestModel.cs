@@ -18,5 +18,6 @@ namespace Chess.Api.Models.RequestModels
         public uint NewXCoordinate { get; set; }
         [Required]
         public uint NewYCoordinate { get; set; }
+        public string PromotionPieceName { get; set; }
     }
 }

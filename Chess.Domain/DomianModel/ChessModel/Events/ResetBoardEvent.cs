@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Chess.Domain.DomianModel.ChessModel.Events
 {
-    [EventVersion("MovedPiece", 1)]
+    [EventVersion("ResetBoard", 1)]
     public class ResetBoardEvent : AggregateEvent<Board, BoardId>
     {
         #region Constructors

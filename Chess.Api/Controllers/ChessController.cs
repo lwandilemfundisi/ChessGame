@@ -43,7 +43,7 @@ namespace Chess.Api.Controllers
                 .PublishAsync(
                 new CreateBoardCommand(
                     BoardId.New, 
-                    ChessExtensions.BuildBoard().PlaceAllPieces()), CancellationToken.None));
+                    ChessExtensions.BuildBoard().PlaceAllPieces(), requireKings: true), CancellationToken.None));
         }
 
         [HttpGet("getboard")]
@@ -67,6 +67,16 @@ namespace Chess.Api.Controllers
             {
                 return BadRequest(ModelState.Values);
             }
+        }
+
+        [HttpPost("reset/{boardId}")]
+        public async Task<IActionResult> ResetBoard(string boardId)
+        {
+            if (string.IsNullOrWhiteSpace(boardId))
+                return BadRequest("A board ID is required.");
+
+            return Ok(await _commandBus.PublishAsync(
+                new ResetBoardCommand(new BoardId(boardId)), CancellationToken.None));
         }
     }
 }

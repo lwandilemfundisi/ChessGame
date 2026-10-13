@@ -15,8 +15,8 @@ namespace Chess.Domain.DomianModel.ChessModel.Specifications
         #region Constructors
 
         public KingSpecification(
-            IReadOnlyCollection<Block> board)
-            : base(board)
+            IReadOnlyCollection<Block> board, uint enPassantX = 0, uint enPassantY = 0)
+            : base(board, enPassantX, enPassantY)
         {
         }
 
@@ -25,7 +25,7 @@ namespace Chess.Domain.DomianModel.ChessModel.Specifications
         #region Virtual Methods
         protected override Notification IsNotSatisfiedBecause(Move obj)
         {
-            throw new NotImplementedException();
+            return base.IsNotSatisfiedBecause(obj);
         }
 
         #endregion
